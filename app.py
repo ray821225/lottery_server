@@ -18,8 +18,6 @@ CORS(app)  # 允許所有來源訪問 API
 @app.route("/lotto", methods=["GET"])
 def get_lotto_results():
 
-    # latest_result = get_latest_lotto_data()
-
     # 取得今天的日期
     today = datetime.date.today()
     year = str(today.year)
@@ -31,10 +29,6 @@ def get_lotto_results():
     # 取得最新樂透開獎號碼
     lottery = TaiwanLotteryCrawler()
     latest_result = lottery.lotto649([year, month_str])
-
-    print('test123123')
-
-    # print(latest_result)
 
     # 若當月查無資料，往前一個月試
     if not latest_result:
@@ -60,12 +54,10 @@ def get_lotto_results():
 
     winning_numbers = latest_result.get("獎號", [])
     special_number = latest_result.get("特別號")
-    draw_date = latest_result.get("開獎日期", "")  # ← 新增這行
+    draw_date = latest_result.get("開獎日期", "")
 
     return jsonify(
         {
-            # "year": year,
-            # "month": month_str,
             "draw_date": draw_date,
             "winning_numbers": winning_numbers,
             "special_number": special_number,
